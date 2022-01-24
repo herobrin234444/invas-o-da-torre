@@ -5,6 +5,7 @@ const Constraint = Matter.Constraint;
 var engine, world,ground;
 var bgimg, torre, canon;
 var torreimg,solo;
+var bola,angulo;
 
 function preload() {
 
@@ -18,6 +19,8 @@ function setup() {
   engine = Engine.create();
   world = engine.world;
   
+  angleMode(DEGREES);
+  angulo = 15
   var options ={
     isStatic:true
   }
@@ -27,7 +30,9 @@ function setup() {
   torre = Bodies.rectangle(160,350,160,310,options);
   World.add(world,torre);
 
-  canon = new Canon(180,110,130,100,50);
+  canon = new Canon(180,110,130,100,angulo);
+  
+  bola = new Ball(canon.x, canon.y);
 }
 
 function draw() {
@@ -42,4 +47,11 @@ function draw() {
   pop();
 
   canon.display();
+  bola.display();
+}
+
+function keyReleased(){
+  if (keyCode ===DOWN_ARROW){
+    bola.shoot();
+  }
 }
