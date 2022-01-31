@@ -6,7 +6,7 @@ var engine, world,ground;
 var bgimg, torre, canon;
 var torreimg,solo;
 var bola,angulo;
-
+var bolas = [];
 function preload() {
 
   bgimg = loadImage("./assets/background.gif");
@@ -32,7 +32,7 @@ function setup() {
 
   canon = new Canon(180,110,130,100,angulo);
   
-  bola = new Ball(canon.x, canon.y);
+ 
 }
 
 function draw() {
@@ -47,11 +47,24 @@ function draw() {
   pop();
 
   canon.display();
-  bola.display();
+  for(var i =0; i<bolas.length; i++){
+    showBalls(bolas[i],i)
+  }
 }
 
 function keyReleased(){
   if (keyCode ===DOWN_ARROW){
-    bola.shoot();
+    bolas[bolas.length-1].shoot();
   }
+}
+
+function keyPressed(){
+  if (keyCode ===DOWN_ARROW){
+    bola = new Ball(canon.x, canon.y);
+    bolas.push(bola);
+  }
+}
+
+function showBalls(bola,i){
+  if (bola){bola.display();}
 }
