@@ -12,8 +12,14 @@ class Ball{
     }
 
     shoot(){
+        var newangle = canon.angle -28;
+        newangle = newangle * (3.14/180);
+        var velocidade = p5.Vector.fromAngle(newangle);
+        velocidade.mult(0.5);
         Matter.Body.setStatic(this.body,false);
-        Matter.Body.setVelocity(this.body,{x:30,y:-20})
+        Matter.Body.setVelocity(this.body,{
+                x:velocidade.x*(180/3.14),
+                y:velocidade.y*(180/3.14)})
     }
     display(){
     var pos = this.body.position;
