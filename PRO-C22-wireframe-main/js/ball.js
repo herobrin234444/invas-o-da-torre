@@ -11,8 +11,17 @@ class Ball{
     World.add(world,this.body);
     }
 
+    remove(index){
+        Matter.Body.setVelocity(this.body,{x:0,y:0})
+        setTimeout(() =>{
+            Matter.World.remove(world,this.body);
+            delete bolas[index];
+        },1000);
+        
+    }
+
     shoot(){
-        var newangle = canon.angle -28;
+        var newangle = canon.a -28;
         newangle = newangle * (3.14/180);
         var velocidade = p5.Vector.fromAngle(newangle);
         velocidade.mult(0.5);

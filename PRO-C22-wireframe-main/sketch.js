@@ -7,6 +7,8 @@ var bgimg, torre, canon;
 var torreimg,solo;
 var bola,angulo;
 var bolas = [];
+var barco;
+var barcos =[];
 function preload() {
 
   bgimg = loadImage("./assets/background.gif");
@@ -31,6 +33,7 @@ function setup() {
   World.add(world,torre);
 
   canon = new Canon(180,110,130,100,angulo);
+
   
  
 }
@@ -48,8 +51,11 @@ function draw() {
 
   canon.display();
   for(var i =0; i<bolas.length; i++){
-    showBalls(bolas[i],i)
+    showBalls(bolas[i],i);
+    colisionboats(i);
   }
+    
+    showboats();
 }
 
 function keyReleased(){
@@ -66,5 +72,46 @@ function keyPressed(){
 }
 
 function showBalls(bola,i){
-  if (bola){bola.display();}
+  if (bola){bola.display();
+  if (bola.body.position.x>=width || bola.body.position.y>=height-50){
+    bola.remove(i);
+  }
+  }
+
+
+  
+}
+
+function showboats(){
+  if (barcos.length>0){
+    if( barcos[barcos.length-1]===undefined || barcos[barcos.length-1].body.position.x<width -300){
+      var posicoes =[-40,-60,-70,-20];
+      var pos =random(posicoes);
+      barco = new Boat(width ,height -100,170,170,pos);
+     barcos.push(barco);
+    }
+    for(var i =0; i<barcos.length; i++){
+      if(barcos[i]){
+      Matter.Body.setVelocity(barcos[i].body,{x:-1,y:0});
+      barcos[i].display();
+      }
+      }
+  }
+  else{
+    barco = new Boat(width -79,height -70,170,170,-80);
+    barcos.push(barco);
+  }
+}
+
+function colisionboats(index){
+  for(var i =0; i<barcos.length; i++){
+    if(bolas[index]!== undefined && barcos[i]!== undefined){
+      var colision =Matter.SAT.collides(bolas[index].body,barcos[i].body);
+      if(colision.collided){
+        barcos[i].remove(i);
+        Matter.World.remove(world,bolas[index].body);
+        delete bolas[index];
+      } 
+    }
+  }
 }
