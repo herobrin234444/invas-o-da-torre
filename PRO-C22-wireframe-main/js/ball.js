@@ -6,13 +6,21 @@ class Ball{
     }
 
     this.r =30;
+    this.speed = 0.05;
     this.body = Bodies.circle(x,y,this.r,options);
     this.image = loadImage("./assets/cannonball.png");
+    this.animation = [this.image];
     World.add(world,this.body);
+    }
+    animate(){
+        this.speed += 0.05;
     }
 
     remove(index){
         Matter.Body.setVelocity(this.body,{x:0,y:0})
+        this.animation = splashanimation;
+        this.speed = 0.05;
+        this.r = 150;
         setTimeout(() =>{
             Matter.World.remove(world,this.body);
             delete bolas[index];
@@ -31,10 +39,11 @@ class Ball{
                 y:velocidade.y*(180/3.14)})
     }
     display(){
+    var index = floor(this.speed%this.animation.length)
     var pos = this.body.position;
     push();
     imageMode(CENTER)
-        image(this.image,pos.x,pos.y,this.r,this.r);
+        image(this.animation[index],pos.x,pos.y,this.r,this.r);
         pop();
 }
 }

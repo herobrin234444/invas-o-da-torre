@@ -9,11 +9,23 @@ var bola,angulo;
 var bolas = [];
 var barco;
 var barcos =[];
+var boatanimation = [];
+var boatspritedata, boatspriteshet, boatframes;
+var brokenanimation = [];
+var brokespriteshet, brokenspritedata, brokenframes;
+var splashanimation = [];
+var spashspriteshet, splashspritedata, splashframes;
+
 function preload() {
 
   bgimg = loadImage("./assets/background.gif");
   torreimg = loadImage("./assets/tower.png");
-
+  boatspritedata = loadJSON("./assets/boat/boat.json");
+  boatspriteshet = loadImage("./assets/boat/boat.png");
+  brokenspritedata = loadJSON("./assets/boat/brokenBoat.json");
+  brokenspriteshet = loadImage("./assets/boat/brokenBoat.png");
+  splashspritedata = loadJSON("./assets/waterSplash/waterSplash.json");
+  splashspriteshet = loadImage("./assets/waterSplash/waterSplash.png");
 }
 function setup() {
 
@@ -34,8 +46,28 @@ function setup() {
 
   canon = new Canon(180,110,130,100,angulo);
 
+  boatframes = boatspritedata.frames;
+  for(var i =0;i<boatframes.length;i++){
+    var pos = boatframes[i].position;
+    var img = boatspriteshet.get(pos.x,pos.y,pos.w,pos.h);
+    boatanimation.push(img);
+
+  }
+  brokenframes = brokenspritedata.frames;
+  for(var i =0;i<brokenframes.length;i++){
+    var pos = brokenframes[i].position;
+    var img = brokenspriteshet.get(pos.x,pos.y,pos.w,pos.h);
+    brokenanimation.push(img);
   
- 
+  }
+  splashframes = splashspritedata.frames;
+  for(var i =0;i<splashframes.length;i++){
+    var pos = splashframes[i].position;
+    var img = splashspriteshet.get(pos.x,pos.y,pos.w,pos.h);
+    splashanimation.push(img);
+  
+  }
+
 }
 
 function draw() {
@@ -73,6 +105,7 @@ function keyPressed(){
 
 function showBalls(bola,i){
   if (bola){bola.display();
+    bola.animate();
   if (bola.body.position.x>=width || bola.body.position.y>=height-50){
     bola.remove(i);
   }
@@ -87,18 +120,19 @@ function showboats(){
     if( barcos[barcos.length-1]===undefined || barcos[barcos.length-1].body.position.x<width -300){
       var posicoes =[-40,-60,-70,-20];
       var pos =random(posicoes);
-      barco = new Boat(width ,height -100,170,170,pos);
+      barco = new Boat(width ,height -100,170,170,pos,boatanimation);
      barcos.push(barco);
     }
     for(var i =0; i<barcos.length; i++){
       if(barcos[i]){
       Matter.Body.setVelocity(barcos[i].body,{x:-1,y:0});
       barcos[i].display();
+      barcos[i].animate();
       }
       }
   }
   else{
-    barco = new Boat(width -79,height -70,170,170,-80);
+    barco = new Boat(width -79,height -70,170,170,-80,boatanimation);
     barcos.push(barco);
   }
 }
