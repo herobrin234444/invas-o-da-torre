@@ -7,11 +7,13 @@ class Boat {
         this.boatpos = bpos;
         this.animation = boatanimation;
         this.speed = 0.05;
+        this.isbroken = false;
         World.add(world,this.body);
         
     }
     remove(i){
         this.animation = brokenanimation;
+        this.isbroken = true;
         this.speed = 0.05;
         this.w = 300;
         this.h = 300;
